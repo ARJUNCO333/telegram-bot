@@ -1,0 +1,42 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+
+def handle_message(update, context):
+    user = update.message.from_user
+    text = update.message.text
+    if text == '/start':
+        # Send the custom keyboard
+        keyboard = [[InlineKeyboardButton("Stupid", callback_data='stupid'),
+                     InlineKeyboardButton("Fat", callback_data='fat'),
+                     InlineKeyboardButton("Dumb", callback_data='dumb')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        context.bot.send_message(chat_id=user.id, text="Choose a button:", reply_markup=reply_markup)
+
+def handle_callback(update, context):
+    query = update.callback_query
+    user = query.from_user
+    data = query.data
+    joke = None
+    if data == 'stupid':
+        joke = "Why did the tomato turn red? Because it saw the salad dressing!"
+    elif data == 'fat':
+        joke = "Why did the chicken cross the playground? To get to the other slide!"
+    elif data == 'dumb':
+        joke = "Why did the cookie go to the doctor? Because it was feeling crummy!"
+    context.bot.send_message(chat_id=user.id, text=joke)
+
+from django.db import models
+
+class ButtonCount(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField()
+    button_name = models.CharField(max_length=20)
+    count = models.IntegerField(default=0)
+# Increment the count for the button
+    count_obj, created = ButtonCount.objects.get_or_create(user_id=user.id, button_name=data)
+    count_obj.count += 1
+    count_obj.save()
+class ButtonCount(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField()
+    button_name = models.CharField(max_length=20)
+    count = models.IntegerField(default=
